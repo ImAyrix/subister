@@ -14,7 +14,7 @@ fi
 
 read -p "Start Amass (y/n)? " status
 if [ "$status" == "y" ]; then
-    $GO_PATH/amass enum -passive -active -d flightio.com -o `pwd`/amass.txt
+    $GO_PATH/amass enum -passive -active -d $1 -o `pwd`/amass.txt
 fi
 
 read -p "Start findomain (y/n)? " status
