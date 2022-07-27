@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GO_PATH="/home/amir/go/bin"
+GO_PATH="$HOME/go/bin"
 
 read -p "Start Asset Finder (y/n)? " status
 if [ "$status" == "y" ]; then
