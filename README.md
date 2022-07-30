@@ -23,5 +23,5 @@ Just give the domain to subister
 sudo cp subister.sh /bin/subister
 mkdir targetname
 cd targetname
-subister target.com
+subister target.com target2.com
 ```
