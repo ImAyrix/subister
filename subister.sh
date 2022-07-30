@@ -1,26 +1,39 @@
 #!/bin/bash
 
 GO_PATH="$HOME/go/bin"
+args=$@
 
-read -p "Start Asset Finder (y/n)? " status
-if [ "$status" == "y" ]; then
-    $GO_PATH/assetfinder --subs-only $1 | tee -a `pwd`/assetfinder.txt
-fi
+function findDomain() {
+    if [ "$2" == "y" ]; then
+        $GO_PATH/assetfinder --subs-only $1 | tee -a `pwd`/assetfinder.txt
+    fi
 
-read -p "Start SubFinder (y/n)? " status
-if [ "$status" == "y" ]; then
-    echo $1 | $GO_PATH/subfinder -silent | tee -a `pwd`/subfinder.txt
-fi
+    if [ "$3" == "y" ]; then
+        echo $1 | $GO_PATH/subfinder -silent | tee -a `pwd`/subfinder.txt
+    fi
 
-read -p "Start Amass (y/n)? " status
-if [ "$status" == "y" ]; then
-    $GO_PATH/amass enum -passive -active -d $1 -o `pwd`/amass.txt
-fi
+    if [ "$4" == "y" ]; then
+        $GO_PATH/amass enum -passive -active -d $1 -o `pwd`/amass.txt
+    fi
 
-read -p "Start findomain (y/n)? " status
-if [ "$status" == "y" ]; then
-    findomain -t $1 -u findomain.txt
-fi
+    if [ "$5" == "y" ]; then
+        findomain -t $1 -u findomain.txt
+    fi
+}
+
+function askTools() {
+    read -p "Use Asset Finder (y/n)? " af
+    read -p "Use SubFinder (y/n)? " sf
+    read -p "Use Amass (y/n)? " am
+    read -p "Use Findomain (y/n)? " fin
+    for arg in $args
+    do
+        echo "Start Search for $arg"
+        findDomain $arg $af $sf $am $fin
+    done
+}
+
+askTools
 
 find `pwd` -type f -name "*.txt" -exec cat {} + | sort -u | $GO_PATH/httpx -silent > `pwd`/result.txt
 find `pwd` -type f -name "*.txt" -exec cat {} + | sort -u | $GO_PATH/httprobe >> `pwd`/result.txt
