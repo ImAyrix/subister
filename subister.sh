@@ -38,4 +38,10 @@ function askTools() {
     done
 }
 
-askTools
+if ! command -v go version &> /dev/null
+then
+    echo "Go is not installed"
+    exit
+else
+    askTools
+fi
